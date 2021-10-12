@@ -9,8 +9,11 @@ let url = document.querySelector('#url');
 let producto = document.querySelector('#producto');
 let descripcion = document.querySelector('#descripcion');
 let formulario = document.querySelector('#formProducto');
+let listaProductos = [];
 //   console.log(formulario);
 //  console.log(descripcion);
+
+cargarInicial();
 
 
 // le agregamos el evento
@@ -37,5 +40,27 @@ function guardarProducto(e){
 function agregarProducto(){
     // crear un objeto Producto
     let productoNuevo = new Producto(codigo.value, producto.value, descripcion.value, cantidad.value, url.value);
-    console.log(productoNuevo)
+    // cargar el producto dentro del arreglo
+    listaProductos.push(productoNuevo);
+    console.log(listaProductos);
+    //al arreglo de productos lo almaceno en localstorage
+    localStorage.setItem('arregloProductos', JSON.stringify(listaProductos));
+    // limpiar el formulario
+    limpiarFormulario();
+    //mostrar un mensaje al usuario
+
+    //mostrar el objeto en una tabla
+}
+
+function limpiarFormulario(){
+    // limpia los value de mis input
+    formulario.reset();
+    //limpiar los estilos
+    codigo.className = 'form-control';
+    //TAREA: resetear las clases del resto de los inputs
+}
+
+function cargarInicial(){
+    // traer los productos del localstorage si existieran sino dejar el arreglo vacio.
+    listaProductos = JSON.parse(localStorage.getItem('arregloProductos')) || [];
 }
