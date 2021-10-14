@@ -47,9 +47,10 @@ function agregarProducto(){
     localStorage.setItem('arregloProductos', JSON.stringify(listaProductos));
     // limpiar el formulario
     limpiarFormulario();
-    //mostrar un mensaje al usuario
+    // cargar el producto nuevo en la fila de la tabla
+    crearFilas(productoNuevo);
 
-    //mostrar el objeto en una tabla
+    //mostrar un mensaje al usuario
 }
 
 function limpiarFormulario(){
@@ -57,10 +58,35 @@ function limpiarFormulario(){
     formulario.reset();
     //limpiar los estilos
     codigo.className = 'form-control';
+    cantidad.className = 'form-control';
+    url.className = 'form-control';
+    producto.className = 'form-control';
+    descripcion.className = 'form-control';
     //TAREA: resetear las clases del resto de los inputs
 }
 
 function cargarInicial(){
     // traer los productos del localstorage si existieran sino dejar el arreglo vacio.
     listaProductos = JSON.parse(localStorage.getItem('arregloProductos')) || [];
+    // si hay productos dentro del arreglo entonces los muestro en la tabla
+    listaProductos.forEach((itemProducto)=>{
+        // codigo que se ejecuta por cada el elemento del arreglo
+        crearFilas(itemProducto);
+    });
+}
+
+function crearFilas(itemProducto){
+    let tabla = document.querySelector('#tablaProducto');
+    console.log(itemProducto)
+    tabla.innerHTML += ` <tr>
+    <th scope="row">${itemProducto.codigo}</th>
+    <td>${itemProducto.nombre}</td>
+    <td>${itemProducto.descripcion}</td>
+    <td>${itemProducto.cantidad}</td>
+    <td>${itemProducto.url}</td>
+    <td>
+      <button class="btn btn-warning">Editar</button>
+      <button class="btn btn-danger">Borrar</button>
+    </td>
+  </tr>`
 }
