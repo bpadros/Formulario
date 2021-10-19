@@ -15,8 +15,9 @@ let producto = document.querySelector("#producto");
 let descripcion = document.querySelector("#descripcion");
 let formulario = document.querySelector("#formProducto");
 let listaProductos = [];
-//   console.log(formulario);
-//  console.log(descripcion);
+let productoExistente = false; //si es false significa que tengo que agregar un nuevo producto
+// true significa que tengo que modificar un  producto existente
+let btnNuevoProducto = document.querySelector("#btnNuevoProducto");
 
 cargarInicial();
 
@@ -37,14 +38,22 @@ descripcion.addEventListener("blur", () => {
   validarCampoRequerido(descripcion);
 });
 formulario.addEventListener("submit", guardarProducto);
+btnNuevoProducto.addEventListener("click", limpiarFormulario);
 
 function guardarProducto(e) {
   e.preventDefault();
   // verificar que pase todas las validaciones
   if (validarGeneral()) {
-    // tengo que crear el producto
-    console.log("aqui creo el producto");
-    agregarProducto();
+    // aqui pregunto cual es el estado de mi variable productoExistente
+    if (productoExistente === false) {
+      // tengo que crear el producto
+      console.log("aqui creo el producto");
+      agregarProducto();
+    } else {
+      // tengo que modificar un producto
+      console.log("aqui quiero modificar el producto");
+      actualizarProducto();
+    }
   } else {
     //aqui no hacemos nada
     console.log("no deberia hacer nada");
@@ -83,6 +92,8 @@ function limpiarFormulario() {
   producto.className = "form-control";
   descripcion.className = "form-control";
   //TAREA: resetear las clases del resto de los inputs
+  // resetear el valor de la variable booleana
+  productoExistente = false;
 }
 
 function cargarInicial() {
@@ -124,4 +135,32 @@ window.prepararEdicion = (codigoProducto) => {
   descripcion.value = productoBuscado.descripcion;
   url.value = productoBuscado.url;
   producto.value = productoBuscado.nombre;
+  // cambio el valor de la variable productoExistente
+  productoExistente = true;
 };
+
+function actualizarProducto() {
+  // buscar la posicion del elemento a editar dentro del arreglo
+  let posicionProducto = listaProductos.findIndex((itemProducto) => {
+    return itemProducto.codigo == codigo.value;
+  });
+  console.log(posicionProducto);
+  // modificar los datos de esa posicion del arreglo
+  listaProductos[posicionProducto].nombre = producto.value;
+  listaProductos[posicionProducto].cantidad = cantidad.value;
+  listaProductos[posicionProducto].descripcion = descripcion.value;
+  listaProductos[posicionProducto].url = url.value;
+  // modificar el localstorage
+  localStorage.setItem('arregloProductos', JSON.stringify(listaProductos))
+  // volver a dibujar la tabla
+  borrarFilas();
+  listaProductos.forEach((itemProducto)=>{ crearFilas(itemProducto) })
+// limpiar formulario
+
+}
+
+
+function borrarFilas(){
+  let tabla = document.querySelector("#tablaProducto");
+  tabla.innerHTML= '';
+}
