@@ -156,7 +156,7 @@ function actualizarProducto() {
   borrarFilas();
   listaProductos.forEach((itemProducto)=>{ crearFilas(itemProducto) })
 // limpiar formulario
-
+ limpiarFormulario();
 }
 
 
@@ -164,3 +164,4 @@ function borrarFilas(){
   let tabla = document.querySelector("#tablaProducto");
   tabla.innerHTML= '';
 }
+
