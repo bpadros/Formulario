@@ -5,6 +5,7 @@ _Practica de create, read, update y delete usando Javascript vanilla_
 
 ## Demo del proyecto
 
+[Demo de practica de CRUD](https://practicacrud-17i.netlify.app/index.html)
 
 ### Como clonar nuestro proyecto
 
